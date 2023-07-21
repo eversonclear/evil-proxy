@@ -58,7 +58,7 @@ class QuickCert
 
   VERSION = "1.0.2"
   CERT_DIR = File.join(Dir.pwd, "certs")
-  Dir.mkdir(CERT_DIR) unless File.exists?(CERT_DIR)
+  Dir.mkdir(CERT_DIR) unless File.exist?(CERT_DIR)
 
   ##
   # Creates a new QuickCert instance using the Certificate
@@ -79,7 +79,7 @@ class QuickCert
     dest = cert_config[:hostname] || cert_config[:user]
     key_file = "#{CERT_DIR}/#{dest}/#{dest}_keypair.pem"
     cert_file = "#{CERT_DIR}/#{dest}/cert_#{dest}.pem"
-    if File.exists?(cert_file) && File.exists?(key_file)
+    if File.exist?(cert_file) && File.exist?(key_file)
       key = OpenSSL::PKey::RSA.new(File.read(key_file))
       cert = OpenSSL::X509::Certificate.new(File.read(cert_file))
     else
@@ -95,7 +95,7 @@ class QuickCert
   # does not already exist at ca_config[:CA_dir].
 
   def create_ca
-    return if File.exists? @ca_config[:CA_dir]
+    return if File.exist? @ca_config[:CA_dir]
 
     Dir.mkdir @ca_config[:CA_dir]
 
@@ -151,12 +151,12 @@ class QuickCert
   def create_key(cert_config)
     dest = cert_config[:hostname] || cert_config[:user]
     keypair_file = "#{CERT_DIR}/#{dest}/#{dest}_keypair.pem"
-    if File.exists?(keypair_file)
+    if File.exist?(keypair_file)
       keypair = OpenSSL::PKey::RSA.new(File.read(keypair_file),
                                        cert_config[:password])
       return keypair_file, keypair
     end
-    Dir.mkdir("#{CERT_DIR}/#{dest}", 0700) unless File.exists?("#{CERT_DIR}/#{dest}")
+    Dir.mkdir("#{CERT_DIR}/#{dest}", 0700) unless File.exist?("#{CERT_DIR}/#{dest}")
 
     puts "Generating RSA keypair" if $DEBUG
     keypair = OpenSSL::PKey::RSA.new 1024
@@ -198,7 +198,7 @@ class QuickCert
     end
     name = OpenSSL::X509::Name.new name
 
-    if File.exists? keypair_file then
+    if File.exist? keypair_file then
       keypair = OpenSSL::PKey::RSA.new(File.read(keypair_file),
                                        cert_config[:password])
     else
